@@ -25,8 +25,8 @@ class ColorMatrix():
 def convert_space(color: np.ndarray, from_space: ColorSpace, to_space: ColorSpace) -> ColorMatrix:
     if (from_space == to_space): return ColorMatrix(color, to_space)
     out = None
-    if (from_space == ColorSpace.CIELAB):
-        out = spaces.lab2rgb(color)
+    if (from_space == ColorSpace.CIELAB): 
+        out = spaces.lab2rgb(color) # CIELAB needs special treatment because the CIELAB space is observer-dependent, though we just go with the default arguments
     else:
         out = spaces.convert_colorspace(color, from_space.value, ColorSpace.RGB.value)
     
@@ -81,8 +81,7 @@ def create_coordinate_distance_matrix(width: int, height: int, key_points: list[
     new_distances = rearrange(distances, "w h k -> (w h) k")
     return new_distances
 
-
-def create_color_distance_matrix(colors: ColorMatrix, distance_space: ColorSpace, key_points: list[KeyObject]) -> np.ndarray: #todo distinguish between input colors and distance colors
+def create_color_distance_matrix(colors: ColorMatrix, distance_space: ColorSpace, key_points: list[KeyObject]) -> np.ndarray:
     distances = np.empty([len(colors), len(key_points)])
     for i in range(len(colors)):
         for j in range(len(key_points)):
